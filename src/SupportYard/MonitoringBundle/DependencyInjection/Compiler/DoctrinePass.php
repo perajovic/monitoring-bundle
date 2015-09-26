@@ -18,7 +18,7 @@ class DoctrinePass implements CompilerPassInterface
             ->setClass('SupportYard\\MonitoringBundle\\Monolog\\DbalLogger')
             ->addMethodCall(
                 'setQueryExecution',
-                [new Reference('supportyard_monitoring.monolog.query_execution')]
+                [new Reference('support_yard_monitoring.monolog.query_execution')]
             );
     }
 }

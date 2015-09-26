@@ -2,23 +2,23 @@ parameters:
     monolog.handler.socket.class: SupportYard\MonitoringBundle\Monolog\SocketHandler
 
 services:
-    supportyard_monitoring.listener.log_env:
+    support_yard_monitoring.listener.log_env:
         class: SupportYard\MonitoringBundle\EventListener\LogEnvListener
         arguments:
             - @logger
         tags:
             - { name: kernel.event_listener, event: kernel.terminate, priority: 255 }
             - { name: monolog.logger, channel: request }
-    supportyard_monitoring.listener.log_resource:
+    support_yard_monitoring.listener.log_resource:
         class: SupportYard\MonitoringBundle\EventListener\LogResourceListener
         arguments:
             - @logger
-            - @supportyard_monitoring.monolog.query_execution
+            - @support_yard_monitoring.monolog.query_execution
             - @kernel
         tags:
             - { name: kernel.event_listener, event: kernel.terminate, priority: -1001 }
             - { name: monolog.logger, channel: resource }
-    supportyard_monitoring.listener.log_exception:
+    support_yard_monitoring.listener.log_exception:
         class: SupportYard\MonitoringBundle\EventListener\LogExceptionListener
         arguments:
             - @logger
@@ -26,10 +26,10 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception, priority: -127 }
             - { name: monolog.logger, channel: exception }
-    supportyard_monitoring.monolog.line_formatter:
+    support_yard_monitoring.monolog.line_formatter:
         class: SupportYard\MonitoringBundle\Monolog\LineFormatter
         arguments:
             - "[%%datetime%% - %%extra.SessionId%% - %%extra.RequestId%%] %%channel%%.%%level_name%%: %%message%% %%context%%"
             - "Y-m-d H:i:s O"
-    supportyard_monitoring.monolog.query_execution:
+    support_yard_monitoring.monolog.query_execution:
         class: SupportYard\MonitoringBundle\Monolog\QueryExecution
