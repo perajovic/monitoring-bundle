@@ -2,6 +2,13 @@ parameters:
     monolog.handler.socket.class: SupportYard\MonitoringBundle\Monolog\SocketHandler
 
 services:
+    supportyard_monitoring.listener.log_env:
+        class: SupportYard\MonitoringBundle\EventListener\LogEnvListener
+        arguments:
+            - @logger
+        tags:
+            - { name: kernel.event_listener, event: kernel.terminate, priority: 255 }
+            - { name: monolog.logger, channel: request }
     supportyard_monitoring.listener.log_resource:
         class: SupportYard\MonitoringBundle\EventListener\LogResourceListener
         arguments:
