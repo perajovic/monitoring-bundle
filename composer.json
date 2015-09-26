@@ -8,7 +8,6 @@
     "authors": [
         {
             "name": "SupportYard",
-            "email": "pera@codecontrol.rs",
             "homepage": "https://www.supportyard.com"
         }
     ],
@@ -21,7 +20,7 @@
         "symfony/twig-bundle": "~2.7",
         "symfony/framework-bundle": "~2.7",
         "doctrine/doctrine-bundle": "1.5.*",
-        "codecontrol/framework-bundle": "0.*"
+        "supportyard/framework-bundle": "0.*"
     },
     "autoload": {
         "psr-4": { "": "src/" }
