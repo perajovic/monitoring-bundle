@@ -11,6 +11,14 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.terminate, priority: -1001 }
             - { name: monolog.logger, channel: resource }
+    supportyard_monitoring.listener.log_exception:
+        class: SupportYard\MonitoringBundle\EventListener\LogExceptionListener
+        arguments:
+            - @logger
+            - @templating
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, priority: -127 }
+            - { name: monolog.logger, channel: exception }
     supportyard_monitoring.monolog.line_formatter:
         class: SupportYard\MonitoringBundle\Monolog\LineFormatter
         arguments:
