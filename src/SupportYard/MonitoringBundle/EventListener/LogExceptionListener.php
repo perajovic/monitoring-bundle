@@ -37,7 +37,7 @@ class LogExceptionListener
         $exception = FlattenException::create($event->getException());
 
         $content = $this->templating->render(
-            'MonitoringBundle:traceForLog.txt.twig',
+            'MonitoringBundle::traceForLog.txt.twig',
             ['exception' => $exception]
         );
 
