@@ -52,7 +52,7 @@ class LogExceptionListenerTest extends EventListenerTestCase
                 'MonitoringBundle:traceForLog.txt.twig',
                 $this->callback(function ($data) {
                     $this->assertInstanceOf(
-                        'Symfony\Component\HttpKernel\Exception\FlattenException',
+                        'Symfony\Component\Debug\Exception\FlattenException',
                         $data['exception']
                     );
 

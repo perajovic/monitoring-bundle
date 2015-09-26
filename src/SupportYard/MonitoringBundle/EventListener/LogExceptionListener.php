@@ -4,7 +4,7 @@ namespace SupportYard\MonitoringBundle\EventListener;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\HttpKernel\Exception\FlattenException;
+use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\Templating\EngineInterface;
 
 class LogExceptionListener
