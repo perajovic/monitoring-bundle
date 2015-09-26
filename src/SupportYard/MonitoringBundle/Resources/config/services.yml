@@ -1,0 +1,11 @@
+parameters:
+    monolog.handler.socket.class: SupportYard\MonitoringBundle\Monolog\SocketHandler
+
+services:
+    supportyard_monitoring.monolog.line_formatter:
+        class: SupportYard\MonitoringBundle\Monolog\LineFormatter
+        arguments:
+            - "[%%datetime%% - %%extra.SessionId%% - %%extra.RequestId%%] %%channel%%.%%level_name%%: %%message%% %%context%%"
+            - "Y-m-d H:i:s O"
+    supportyard_monitoring.monolog.query_execution:
+        class: SupportYard\MonitoringBundle\Monolog\QueryExecution
