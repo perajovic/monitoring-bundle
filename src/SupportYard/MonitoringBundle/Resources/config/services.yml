@@ -13,7 +13,7 @@ services:
         class: SupportYard\MonitoringBundle\EventListener\LogResourceListener
         arguments:
             - @logger
-            - @upportyard_monitoring.monolog.query_execution
+            - @supportyard_monitoring.monolog.query_execution
             - @kernel
         tags:
             - { name: kernel.event_listener, event: kernel.terminate, priority: -1001 }
