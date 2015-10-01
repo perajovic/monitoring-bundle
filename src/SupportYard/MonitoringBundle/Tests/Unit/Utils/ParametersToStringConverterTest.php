@@ -2,7 +2,7 @@
 
 namespace SupportYard\MonitoringBundle\Tests\Unit\Utils;
 
-use Codecontrol\FrameworkBundle\Test\TestCase;
+use SupportYard\FrameworkBundle\Test\TestCase;
 use stdClass;
 use SupportYard\MonitoringBundle\Utils\ParametersToStringConverter;
 

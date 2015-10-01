@@ -2,7 +2,7 @@
 
 namespace SupportYard\MonitoringBundle\Tests\Unit\EventListener;
 
-use Codecontrol\FrameworkBundle\Test\EventListenerTestCase;
+use SupportYard\FrameworkBundle\Test\EventListenerTestCase;
 use SupportYard\MonitoringBundle\EventListener\LogResourceListener;
 
 class LogResourceListenerTest extends EventListenerTestCase

@@ -2,7 +2,7 @@
 
 namespace SupportYard\MonitoringBundle\Tests\Unit\EventListener;
 
-use Codecontrol\FrameworkBundle\Test\EventListenerTestCase;
+use SupportYard\FrameworkBundle\Test\EventListenerTestCase;
 use Exception;
 use SupportYard\MonitoringBundle\EventListener\LogExceptionListener;
 

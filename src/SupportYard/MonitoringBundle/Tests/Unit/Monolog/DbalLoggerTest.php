@@ -2,7 +2,7 @@
 
 namespace SupportYard\MonitoringBundle\Tests\Unit\Monolog;
 
-use Codecontrol\FrameworkBundle\Test\TestCase;
+use SupportYard\FrameworkBundle\Test\TestCase;
 use SupportYard\MonitoringBundle\Monolog\DbalLogger;
 
 class DbalLoggerTest extends TestCase
