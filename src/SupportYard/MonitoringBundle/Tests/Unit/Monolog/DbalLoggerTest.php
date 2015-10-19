@@ -69,8 +69,8 @@ class DbalLoggerTest extends TestCase
             ->with(
                 $this->stringContains($sql),
                 $this->callback(function ($data) use ($params) {
-                    $this->assertArrayHasKey('QueryTime', $data['metadata']);
-                    $this->assertSame('ms', $data['metadata']['QueryTimeUnit']);
+                    $this->assertArrayHasKey('query_time', $data['metadata']);
+                    $this->assertSame('ms', $data['metadata']['query_time_unit']);
                     $this->assertSame('single_query', $data['description']);
 
                     return $data;

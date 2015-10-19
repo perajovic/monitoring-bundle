@@ -47,7 +47,7 @@ class LogEnvListener
         $this->logger->info(
             sprintf('Request: method = %s; url = %s', $method, $url),
             [
-                'metadata' => ['HttpMethod' => $method, 'Url' => $url],
+                'metadata' => ['http_method' => $method, 'url' => $url],
                 'description' => 'request_info',
             ]
         );
@@ -64,7 +64,7 @@ class LogEnvListener
         $this->logger->info(
             sprintf('Client info: ip = %s; user agent = %s', $ip, $userAgent),
             [
-                'metadata' => ['RemoteAddress' => $ip, 'HttpUserAgent' => $userAgent],
+                'metadata' => ['remote_address' => $ip, 'http_user_agent' => $userAgent],
                 'description' => 'client_info',
             ]
         );
