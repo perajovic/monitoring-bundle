@@ -130,7 +130,7 @@ class LogEnvListenerTest extends EventListenerTestCase
     {
         $message = sprintf('Request: method = %s; url = %s', $method, $url);
         $context = [
-            'metadata' => ['HttpMethod' => $method, 'Url' => $url],
+            'metadata' => ['http_method' => $method, 'url' => $url],
             'description' => 'request_info',
         ];
 
@@ -145,7 +145,7 @@ class LogEnvListenerTest extends EventListenerTestCase
     {
         $message = sprintf('Client info: ip = %s; user agent = %s', $ip, $userAgent);
         $context = [
-            'metadata' => ['RemoteAddress' => $ip, 'HttpUserAgent' => $userAgent],
+            'metadata' => ['remote_address' => $ip, 'http_user_agent' => $userAgent],
             'description' => 'client_info',
         ];
 

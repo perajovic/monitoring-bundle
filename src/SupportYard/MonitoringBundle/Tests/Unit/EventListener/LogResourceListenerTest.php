@@ -47,13 +47,13 @@ class LogResourceListenerTest extends EventListenerTestCase
                 $this->callback(function ($data) use ($queryTotalTime, $queryCount) {
                     $metadata = $data['metadata'];
 
-                    $this->assertArrayHasKey('RequestTime', $metadata);
-                    $this->assertSame('ms', $metadata['RequestTimeUnit']);
-                    $this->assertSame($queryTotalTime, $metadata['QueryTotalTime']);
-                    $this->assertSame('ms', $metadata['QueryTotalTimeUnit']);
-                    $this->assertSame($queryCount, $metadata['QueryCount']);
-                    $this->assertArrayHasKey('MemoryUsage', $metadata);
-                    $this->assertSame('MB', $metadata['MemoryUsageUnit']);
+                    $this->assertArrayHasKey('request_time', $metadata);
+                    $this->assertSame('ms', $metadata['request_time_unit']);
+                    $this->assertSame($queryTotalTime, $metadata['query_total_time']);
+                    $this->assertSame('ms', $metadata['query_total_time_unit']);
+                    $this->assertSame($queryCount, $metadata['query_count']);
+                    $this->assertArrayHasKey('memory_usage', $metadata);
+                    $this->assertSame('MB', $metadata['memory_usage_unit']);
                     $this->assertSame('request_resources', $data['description']);
 
                     return $data;

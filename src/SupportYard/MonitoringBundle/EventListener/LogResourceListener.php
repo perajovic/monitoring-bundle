@@ -56,13 +56,13 @@ class LogResourceListener
             ),
             [
                 'metadata' => [
-                    'RequestTime' => $requestTime,
-                    'RequestTimeUnit' => 'ms',
-                    'QueryTotalTime' => $queryTime,
-                    'QueryTotalTimeUnit' => 'ms',
-                    'QueryCount' => $queryCount,
-                    'MemoryUsage' => $memory,
-                    'MemoryUsageUnit' => 'MB',
+                    'request_time' => $requestTime,
+                    'request_time_unit' => 'ms',
+                    'query_total_time' => $queryTime,
+                    'query_total_time_unit' => 'ms',
+                    'query_count' => $queryCount,
+                    'memory_usage' => $memory,
+                    'memory_usage_unit' => 'MB',
                 ],
                 'description' => 'request_resources',
             ]
