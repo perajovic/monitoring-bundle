@@ -15,17 +15,24 @@ class DbalLoggerTest extends TestCase
         $sql1 = 'SELECT * FROM foo';
         $params1 = null;
         $sql2 = 'SELECT * FROM bar';
-        $params2 = ['foo' => 'bar'];
+        $params2 = [];
+        $sql3 = 'SELECT * FROM baz';
+        $params3 = ['foo' => 'bar'];
 
         $this->ensureExecutionTimeIsRecorded();
         $this->ensureCounterIsIncremented();
+
         $this->ensureMessageIsLogged(0, $sql1, $params1);
         $this->ensureMessageIsLogged(1, $sql2, $params2);
+        $this->ensureMessageIsLogged(2, $sql3, $params3);
 
         $this->dbalLogger->startQuery($sql1, $params1);
         $this->dbalLogger->stopQuery();
 
         $this->dbalLogger->startQuery($sql2, $params2);
+        $this->dbalLogger->stopQuery();
+
+        $this->dbalLogger->startQuery($sql3, $params3);
         $this->dbalLogger->stopQuery();
     }
 
@@ -42,6 +49,7 @@ class DbalLoggerTest extends TestCase
 
         $this->ensureExecutionTimeIsNotRecorded();
         $this->ensureCounterIsNotIncremented();
+
         $this->ensureMessageIsLogged(0, $sql1, $params1);
         $this->ensureMessageIsLogged(1, $sql2, $params2);
 
@@ -69,9 +77,14 @@ class DbalLoggerTest extends TestCase
             ->with(
                 $this->stringContains($sql),
                 $this->callback(function ($data) use ($params) {
+                    if (null === $params) {
+                        $params = [];
+                    }
+
                     $this->assertArrayHasKey('query_time', $data['metadata']);
                     $this->assertSame('ms', $data['metadata']['query_time_unit']);
-                    $this->assertSame('single_query', $data['description']);
+                    $this->assertSame($params, $data['metadata']['params']);
+                    $this->assertSame('query', $data['description']);
 
                     return $data;
                 })
@@ -98,7 +111,7 @@ class DbalLoggerTest extends TestCase
     {
         $this
             ->queryExecution
-            ->expects($this->exactly(2))
+            ->expects($this->exactly(3))
             ->method('incrementCounter');
     }
 
@@ -106,7 +119,7 @@ class DbalLoggerTest extends TestCase
     {
         $this
             ->queryExecution
-            ->expects($this->exactly(2))
+            ->expects($this->exactly(3))
             ->method('recordTime')
             ->with($this->greaterThan(0));
     }

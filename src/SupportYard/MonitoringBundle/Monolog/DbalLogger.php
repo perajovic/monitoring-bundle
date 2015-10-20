@@ -2,7 +2,6 @@
 
 namespace SupportYard\MonitoringBundle\Monolog;
 
-use SupportYard\MonitoringBundle\Utils\ParametersToStringConverter;
 use Symfony\Bridge\Doctrine\Logger\DbalLogger as DoctrineDbalLogger;
 
 class DbalLogger extends DoctrineDbalLogger
@@ -50,20 +49,23 @@ class DbalLogger extends DoctrineDbalLogger
     public function stopQuery()
     {
         $queryTime = $this->getQueryTime();
+
         if ($this->queryExecution) {
             $this->queryExecution->recordTime($queryTime);
             $this->queryExecution->incrementCounter();
         }
+
         $query = $this->queries[$this->currentQuery];
-        $params = ParametersToStringConverter::convert(
-            is_array($query['params']) ? $query['params'] : []
-        );
 
         $this->log(
-            sprintf('%s; %sms; [%s]', $query['sql'], $queryTime, $params),
+            sprintf('%s; %sms', $query['sql'], $queryTime),
             [
-                'metadata' => ['query_time' => $queryTime, 'query_time_unit' => 'ms'],
-                'description' => 'single_query',
+                'metadata' => [
+                    'query_time' => $queryTime,
+                    'query_time_unit' => 'ms',
+                    'params' => is_array($query['params']) ? $query['params'] : [],
+                ],
+                'description' => 'query',
             ]
         );
     }
