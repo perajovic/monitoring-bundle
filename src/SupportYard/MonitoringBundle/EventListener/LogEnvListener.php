@@ -44,12 +44,14 @@ class LogEnvListener
         $url = $request->getPathInfo();
         $remoteAddress = $request->getClientIp();
         $userAgent = $request->headers->get('User-Agent');
+        $hostname = gethostname();
 
         $this->logger->info(
             sprintf(
-                'Request: method = %s; url = %s; remote_address= %s; http_user_agent = %s',
+                'Request: method = %s; url = %s; hostname = %s; remote_address= %s; http_user_agent = %s',
                 $method,
                 $url,
+                $hostname,
                 $remoteAddress,
                 $userAgent
             ),
@@ -57,6 +59,7 @@ class LogEnvListener
                 'metadata' => [
                     'http_method' => $method,
                     'url' => $url,
+                    'hostname' => $hostname,
                     'remote_address' => $remoteAddress,
                     'http_user_agent' => $userAgent,
                 ],

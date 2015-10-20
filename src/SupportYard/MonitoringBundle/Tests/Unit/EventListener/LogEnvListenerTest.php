@@ -48,6 +48,7 @@ class LogEnvListenerTest extends EventListenerTestCase
         $getData = ['foo' => 'bar'];
         $postData = ['foo' => new stdClass()];
         $filesData = ['bar' => 'baz'];
+        $hostname = gethostname();
 
         $this->ensureRequest();
 
@@ -59,7 +60,7 @@ class LogEnvListenerTest extends EventListenerTestCase
         $this->ensurePostData($postData);
         $this->ensureFilesData($filesData);
 
-        $this->ensureRequestIsLogged($httpMethod, $url, $ip, $userAgent);
+        $this->ensureRequestIsLogged($httpMethod, $url, $hostname, $ip, $userAgent);
         $this->ensureGetIsLogged();
         $this->ensurePostIsLogged();
         $this->ensureFilesIsLogged();
@@ -125,12 +126,13 @@ class LogEnvListenerTest extends EventListenerTestCase
             ->will($this->returnValue($userAgent));
     }
 
-    private function ensureRequestIsLogged($method, $url, $ip, $userAgent)
+    private function ensureRequestIsLogged($method, $url, $hostname, $ip, $userAgent)
     {
         $message = sprintf(
-            'Request: method = %s; url = %s; remote_address= %s; http_user_agent = %s',
+            'Request: method = %s; url = %s; hostname = %s; remote_address= %s; http_user_agent = %s',
             $method,
             $url,
+            $hostname,
             $ip,
             $userAgent
         );
@@ -139,6 +141,7 @@ class LogEnvListenerTest extends EventListenerTestCase
             'metadata' => [
                 'http_method' => $method,
                 'url' => $url,
+                'hostname' => $hostname,
                 'remote_address' => $ip,
                 'http_user_agent' => $userAgent,
             ],
