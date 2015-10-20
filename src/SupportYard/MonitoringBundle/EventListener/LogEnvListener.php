@@ -30,7 +30,6 @@ class LogEnvListener
         $request = $event->getRequest();
 
         $this->logRequest($request);
-        $this->logClientInfo($request);
         $this->logGet($request);
         $this->logPost($request);
         $this->logFiles($request);
@@ -43,29 +42,25 @@ class LogEnvListener
     {
         $method = $request->getRealMethod();
         $url = $request->getPathInfo();
-
-        $this->logger->info(
-            sprintf('Request: method = %s; url = %s', $method, $url),
-            [
-                'metadata' => ['http_method' => $method, 'url' => $url],
-                'description' => 'request_info',
-            ]
-        );
-    }
-
-    /**
-     * @param Request $request
-     */
-    private function logClientInfo(Request $request)
-    {
+        $remoteAddress = $request->getClientIp();
         $userAgent = $request->headers->get('User-Agent');
-        $ip = $request->getClientIp();
 
         $this->logger->info(
-            sprintf('Client info: ip = %s; user agent = %s', $ip, $userAgent),
+            sprintf(
+                'Request: method = %s; url = %s; remote_address= %s; http_user_agent = %s',
+                $method,
+                $url,
+                $remoteAddress,
+                $userAgent
+            ),
             [
-                'metadata' => ['remote_address' => $ip, 'http_user_agent' => $userAgent],
-                'description' => 'client_info',
+                'metadata' => [
+                    'http_method' => $method,
+                    'url' => $url,
+                    'remote_address' => $remoteAddress,
+                    'http_user_agent' => $userAgent,
+                ],
+                'description' => 'request_info',
             ]
         );
     }

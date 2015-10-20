@@ -31,7 +31,7 @@ class LogEnvListenerTest extends EventListenerTestCase
         $this->ensurePostData($postData);
         $this->ensureFilesData($filesData);
 
-        $this->ensureLoggerIsCalledExactly(2);
+        $this->ensureLoggerIsCalledExactly(1);
 
         $this->listener->onKernelTerminate($this->event);
     }
@@ -59,8 +59,7 @@ class LogEnvListenerTest extends EventListenerTestCase
         $this->ensurePostData($postData);
         $this->ensureFilesData($filesData);
 
-        $this->ensureRequestIsLogged($httpMethod, $url);
-        $this->ensureClientInfoIsLogged($userAgent, $ip);
+        $this->ensureRequestIsLogged($httpMethod, $url, $ip, $userAgent);
         $this->ensureGetIsLogged();
         $this->ensurePostIsLogged();
         $this->ensureFilesIsLogged();
@@ -126,32 +125,29 @@ class LogEnvListenerTest extends EventListenerTestCase
             ->will($this->returnValue($userAgent));
     }
 
-    private function ensureRequestIsLogged($method, $url)
+    private function ensureRequestIsLogged($method, $url, $ip, $userAgent)
     {
-        $message = sprintf('Request: method = %s; url = %s', $method, $url);
+        $message = sprintf(
+            'Request: method = %s; url = %s; remote_address= %s; http_user_agent = %s',
+            $method,
+            $url,
+            $ip,
+            $userAgent
+        );
+
         $context = [
-            'metadata' => ['http_method' => $method, 'url' => $url],
+            'metadata' => [
+                'http_method' => $method,
+                'url' => $url,
+                'remote_address' => $ip,
+                'http_user_agent' => $userAgent,
+            ],
             'description' => 'request_info',
         ];
 
         $this
             ->logger
             ->expects($this->at(0))
-            ->method('info')
-            ->with($message, $context);
-    }
-
-    private function ensureClientInfoIsLogged($userAgent, $ip)
-    {
-        $message = sprintf('Client info: ip = %s; user agent = %s', $ip, $userAgent);
-        $context = [
-            'metadata' => ['remote_address' => $ip, 'http_user_agent' => $userAgent],
-            'description' => 'client_info',
-        ];
-
-        $this
-            ->logger
-            ->expects($this->at(1))
             ->method('info')
             ->with($message, $context);
     }
@@ -163,7 +159,7 @@ class LogEnvListenerTest extends EventListenerTestCase
 
         $this
             ->logger
-            ->expects($this->at(2))
+            ->expects($this->at(1))
             ->method('info')
             ->with($message, $context);
     }
@@ -175,7 +171,7 @@ class LogEnvListenerTest extends EventListenerTestCase
 
         $this
             ->logger
-            ->expects($this->at(3))
+            ->expects($this->at(2))
             ->method('info')
             ->with($message, $context);
     }
@@ -187,7 +183,7 @@ class LogEnvListenerTest extends EventListenerTestCase
 
         $this
             ->logger
-            ->expects($this->at(4))
+            ->expects($this->at(3))
             ->method('info')
             ->with($message, $context);
     }
