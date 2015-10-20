@@ -81,7 +81,10 @@ class LogEnvListener
 
         $this->logger->info(
             sprintf('$_GET = %s', ParametersToStringConverter::convert($data)),
-            ['description' => 'get_payload']
+            [
+                'metadata' => ['data' => $data],
+                'description' => 'get_payload',
+            ]
         );
     }
 
@@ -98,7 +101,10 @@ class LogEnvListener
 
         $this->logger->info(
             sprintf('$_POST = %s', ParametersToStringConverter::convert($data)),
-            ['description' => 'post_payload']
+            [
+                'metadata' => ['data' => $data],
+                'description' => 'post_payload',
+            ]
         );
     }
 
@@ -115,7 +121,10 @@ class LogEnvListener
 
         $this->logger->info(
             sprintf('$_FILES = %s', ParametersToStringConverter::convert($data)),
-            ['description' => 'files_payload']
+            [
+                'metadata' => ['data' => $data],
+                'description' => 'files_payload',
+            ]
         );
     }
 }

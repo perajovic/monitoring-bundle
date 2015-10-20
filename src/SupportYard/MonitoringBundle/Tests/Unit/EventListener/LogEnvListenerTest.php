@@ -158,7 +158,10 @@ class LogEnvListenerTest extends EventListenerTestCase
     private function ensureGetIsLogged()
     {
         $message = '$_GET = "foo": "bar"';
-        $context = ['description' => 'get_payload'];
+        $context = [
+            'metadata' => ['data' => ['foo' => 'bar']],
+            'description' => 'get_payload',
+        ];
 
         $this
             ->logger
@@ -170,7 +173,10 @@ class LogEnvListenerTest extends EventListenerTestCase
     private function ensurePostIsLogged()
     {
         $message = '$_POST = "foo": "{}"';
-        $context = ['description' => 'post_payload'];
+        $context = [
+            'metadata' => ['data' => ['foo' => new stdClass()]],
+            'description' => 'post_payload',
+        ];
 
         $this
             ->logger
@@ -182,7 +188,10 @@ class LogEnvListenerTest extends EventListenerTestCase
     private function ensureFilesIsLogged()
     {
         $message = '$_FILES = "bar": "baz"';
-        $context = ['description' => 'files_payload'];
+        $context = [
+            'metadata' => ['data' => ['bar' => 'baz']],
+            'description' => 'files_payload',
+        ];
 
         $this
             ->logger
