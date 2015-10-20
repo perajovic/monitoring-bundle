@@ -54,7 +54,7 @@ class LogResourceListenerTest extends EventListenerTestCase
                     $this->assertSame($queryCount, $metadata['query_count']);
                     $this->assertArrayHasKey('memory_usage', $metadata);
                     $this->assertSame('MB', $metadata['memory_usage_unit']);
-                    $this->assertSame('request_resources', $data['description']);
+                    $this->assertSame('resources_info', $data['description']);
 
                     return $data;
                 })

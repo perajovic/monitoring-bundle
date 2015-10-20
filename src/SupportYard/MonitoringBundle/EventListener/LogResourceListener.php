@@ -64,7 +64,7 @@ class LogResourceListener
                     'memory_usage' => $memory,
                     'memory_usage_unit' => 'MB',
                 ],
-                'description' => 'request_resources',
+                'description' => 'resources_info',
             ]
         );
     }
