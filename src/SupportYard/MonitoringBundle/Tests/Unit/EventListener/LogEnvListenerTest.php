@@ -160,7 +160,7 @@ class LogEnvListenerTest extends EventListenerTestCase
         $message = '$_GET = "foo": "bar"';
         $context = [
             'metadata' => ['data' => ['foo' => 'bar']],
-            'description' => 'get_payload',
+            'description' => 'get',
         ];
 
         $this
@@ -175,7 +175,7 @@ class LogEnvListenerTest extends EventListenerTestCase
         $message = '$_POST = "foo": "{}"';
         $context = [
             'metadata' => ['data' => ['foo' => new stdClass()]],
-            'description' => 'post_payload',
+            'description' => 'post',
         ];
 
         $this
@@ -190,7 +190,7 @@ class LogEnvListenerTest extends EventListenerTestCase
         $message = '$_FILES = "bar": "baz"';
         $context = [
             'metadata' => ['data' => ['bar' => 'baz']],
-            'description' => 'files_payload',
+            'description' => 'files',
         ];
 
         $this
