@@ -39,7 +39,7 @@ class LogExceptionListenerTest extends EventListenerTestCase
             ->logger
             ->expects($this->once())
             ->method('info')
-            ->with($content);
+            ->with($content, ['metadata' => [], 'description' => 'exception_info']);
     }
 
     private function ensureTemplateContent($content)

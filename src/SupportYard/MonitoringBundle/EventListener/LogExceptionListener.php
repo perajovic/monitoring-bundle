@@ -41,6 +41,12 @@ class LogExceptionListener
             ['exception' => $exception]
         );
 
-        $this->logger->info(htmlspecialchars_decode($content, ENT_QUOTES));
+        $this->logger->info(
+            htmlspecialchars_decode($content, ENT_QUOTES),
+            [
+                'metadata' => [],
+                'description' => 'exception_info',
+            ]
+        );
     }
 }
