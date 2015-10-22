@@ -62,6 +62,9 @@ class LogEnvListener
                     'hostname' => $hostname,
                     'remote_address' => $remoteAddress,
                     'http_user_agent' => $userAgent,
+                    'attributes' => $request->attributes->all(),
+                    'headers' => $request->headers->all(),
+                    'session' => $request->getSession()->all(),
                 ],
                 'description' => 'request_info',
             ]

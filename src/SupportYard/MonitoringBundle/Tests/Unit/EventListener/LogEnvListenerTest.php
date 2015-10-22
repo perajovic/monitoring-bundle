@@ -20,6 +20,9 @@ class LogEnvListenerTest extends EventListenerTestCase
         $getData = [];
         $postData = [];
         $filesData = [];
+        $attributes = ['x' => 'y'];
+        $headers = ['y' => 'v'];
+        $session = ['v' => 'z'];
 
         $this->ensureRequest();
 
@@ -27,6 +30,9 @@ class LogEnvListenerTest extends EventListenerTestCase
         $this->ensureUrl($url);
         $this->ensureUserAgent($userAgent);
         $this->ensureIp($ip);
+        $this->ensureHeaders($headers);
+        $this->ensureSession($session);
+        $this->ensureAttributes($attributes);
         $this->ensureGetData($getData);
         $this->ensurePostData($postData);
         $this->ensureFilesData($filesData);
@@ -49,6 +55,9 @@ class LogEnvListenerTest extends EventListenerTestCase
         $postData = ['foo' => new stdClass()];
         $filesData = ['bar' => 'baz'];
         $hostname = gethostname();
+        $attributes = ['x' => 'y'];
+        $headers = ['y' => 'v'];
+        $session = ['v' => 'z'];
 
         $this->ensureRequest();
 
@@ -56,11 +65,23 @@ class LogEnvListenerTest extends EventListenerTestCase
         $this->ensureUrl($url);
         $this->ensureUserAgent($userAgent);
         $this->ensureIp($ip);
+        $this->ensureAttributes($attributes);
+        $this->ensureHeaders($headers);
+        $this->ensureSession($session);
         $this->ensureGetData($getData);
         $this->ensurePostData($postData);
         $this->ensureFilesData($filesData);
 
-        $this->ensureRequestIsLogged($httpMethod, $url, $hostname, $ip, $userAgent);
+        $this->ensureRequestIsLogged(
+            $httpMethod,
+            $url,
+            $hostname,
+            $ip,
+            $userAgent,
+            $attributes,
+            $headers,
+            $session
+        );
         $this->ensureGetIsLogged();
         $this->ensurePostIsLogged();
         $this->ensureFilesIsLogged();
@@ -72,9 +93,11 @@ class LogEnvListenerTest extends EventListenerTestCase
     {
         parent::setUp();
 
-        $this->headerBag = $this->createHeaderBag();
         $this->queryBag = $this->createParameterBag();
         $this->requestBag = $this->createParameterBag();
+        $this->attributesBag = $this->createParameterBag();
+        $this->headersBag = $this->createHeaderBag();
+        $this->sessionBag = $this->createSession();
         $this->fileBag = $this->createFileBag();
         $this->request = $this->createRequest();
         $this->event = $this->createPostResponseEvent();
@@ -116,18 +139,63 @@ class LogEnvListenerTest extends EventListenerTestCase
 
     private function ensureUserAgent($userAgent)
     {
-        $this->request->headers = $this->headerBag;
+        $this->request->headers = $this->headersBag;
 
         $this
-            ->headerBag
+            ->headersBag
             ->expects($this->once())
             ->method('get')
             ->with('User-Agent')
             ->will($this->returnValue($userAgent));
     }
 
-    private function ensureRequestIsLogged($method, $url, $hostname, $ip, $userAgent)
+    private function ensureAttributes($attributes)
     {
+        $this->request->attributes = $this->attributesBag;
+
+        $this
+            ->attributesBag
+            ->expects($this->once())
+            ->method('all')
+            ->will($this->returnValue($attributes));
+    }
+
+    private function ensureHeaders($headers)
+    {
+        $this->request->headers = $this->headersBag;
+
+        $this
+            ->headersBag
+            ->expects($this->once())
+            ->method('all')
+            ->will($this->returnValue($headers));
+    }
+
+    private function ensureSession($session)
+    {
+        $this
+            ->request
+            ->expects($this->once())
+            ->method('getSession')
+            ->will($this->returnValue($this->sessionBag));
+
+        $this
+            ->sessionBag
+            ->expects($this->once())
+            ->method('all')
+            ->will($this->returnValue($session));
+    }
+
+    private function ensureRequestIsLogged(
+        $method,
+        $url,
+        $hostname,
+        $ip,
+        $userAgent,
+        $attributes,
+        $headers,
+        $session
+    ) {
         $message = sprintf(
             'Request: method = %s; url = %s; hostname = %s; remote_address= %s; http_user_agent = %s',
             $method,
@@ -144,6 +212,9 @@ class LogEnvListenerTest extends EventListenerTestCase
                 'hostname' => $hostname,
                 'remote_address' => $ip,
                 'http_user_agent' => $userAgent,
+                'attributes' => $attributes,
+                'headers' => $headers,
+                'session' => $session,
             ],
             'description' => 'request_info',
         ];
@@ -254,6 +325,13 @@ class LogEnvListenerTest extends EventListenerTestCase
     private function createFileBag()
     {
         return $this->createMockFor('Symfony\Component\HttpFoundation\FileBag');
+    }
+
+    private function createSession()
+    {
+        return $this->createMockFor(
+            'Symfony\Component\HttpFoundation\Session\SessionInterface'
+        );
     }
 
     private function createLogger()
