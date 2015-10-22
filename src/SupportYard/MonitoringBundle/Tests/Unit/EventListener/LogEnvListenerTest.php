@@ -193,7 +193,7 @@ class LogEnvListenerTest extends EventListenerTestCase
                 'attributes' => $attributes,
                 'headers' => $headers,
             ],
-            'description' => 'request_info',
+            'description' => 'request',
         ];
 
         $this

@@ -65,7 +65,7 @@ class LogEnvListener
                     'attributes' => $request->attributes->all(),
                     'headers' => $request->headers->all(),
                 ],
-                'description' => 'request_info',
+                'description' => 'request',
             ]
         );
     }

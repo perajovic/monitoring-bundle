@@ -45,7 +45,7 @@ class LogExceptionListener
             htmlspecialchars_decode($content, ENT_QUOTES),
             [
                 'metadata' => [],
-                'description' => 'exception_info',
+                'description' => 'exception',
             ]
         );
     }
