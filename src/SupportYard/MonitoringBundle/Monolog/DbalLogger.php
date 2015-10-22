@@ -58,7 +58,7 @@ class DbalLogger extends DoctrineDbalLogger
         $query = $this->queries[$this->currentQuery];
 
         $this->log(
-            sprintf('%s; %sms', $query['sql'], $queryTime),
+            sprintf('%s', $query['sql']),
             [
                 'metadata' => [
                     'query_time' => $queryTime,
