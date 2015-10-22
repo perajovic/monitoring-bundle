@@ -81,8 +81,8 @@ class DbalLoggerTest extends TestCase
                         $params = [];
                     }
 
-                    $this->assertArrayHasKey('query_time', $data['metadata']);
-                    $this->assertSame('ms', $data['metadata']['query_time_unit']);
+                    $this->assertArrayHasKey('time', $data['metadata']);
+                    $this->assertSame('ms', $data['metadata']['time_unit']);
                     $this->assertSame($params, $data['metadata']['params']);
                     $this->assertSame('query', $data['description']);
 
