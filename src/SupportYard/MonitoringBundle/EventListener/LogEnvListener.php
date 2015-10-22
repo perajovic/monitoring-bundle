@@ -64,7 +64,6 @@ class LogEnvListener
                     'http_user_agent' => $userAgent,
                     'attributes' => $request->attributes->all(),
                     'headers' => $request->headers->all(),
-                    'session' => $request->getSession()->all(),
                 ],
                 'description' => 'request_info',
             ]
