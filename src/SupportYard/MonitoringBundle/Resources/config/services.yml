@@ -1,6 +1,3 @@
-parameters:
-    monolog.handler.socket.class: SupportYard\MonitoringBundle\Monolog\SocketHandler
-
 services:
     support_yard_monitoring.listener.log_env:
         class: SupportYard\MonitoringBundle\EventListener\LogEnvListener
@@ -9,6 +6,14 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.terminate, priority: 255 }
             - { name: monolog.logger, channel: request }
+    support_yard_monitoring.listener.log_exception:
+        class: SupportYard\MonitoringBundle\EventListener\LogExceptionListener
+        arguments:
+            - @logger
+            - @templating
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, priority: -127 }
+            - { name: monolog.logger, channel: exception }
     support_yard_monitoring.listener.log_resource:
         class: SupportYard\MonitoringBundle\EventListener\LogResourceListener
         arguments:
@@ -18,14 +23,6 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.terminate, priority: -1001 }
             - { name: monolog.logger, channel: resource }
-    support_yard_monitoring.listener.log_exception:
-        class: SupportYard\MonitoringBundle\EventListener\LogExceptionListener
-        arguments:
-            - @logger
-            - @templating
-        tags:
-            - { name: kernel.event_listener, event: kernel.exception, priority: -127 }
-            - { name: monolog.logger, channel: exception }
     support_yard_monitoring.monolog.line_formatter:
         class: SupportYard\MonitoringBundle\Monolog\LineFormatter
         arguments:
