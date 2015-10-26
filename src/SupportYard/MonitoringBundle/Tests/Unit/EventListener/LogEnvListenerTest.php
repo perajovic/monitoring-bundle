@@ -2,8 +2,8 @@
 
 namespace SupportYard\MonitoringBundle\Tests\Unit\EventListener;
 
-use SupportYard\FrameworkBundle\Test\EventListenerTestCase;
 use stdClass;
+use SupportYard\FrameworkBundle\Test\EventListenerTestCase;
 use SupportYard\MonitoringBundle\EventListener\LogEnvListener;
 
 class LogEnvListenerTest extends EventListenerTestCase
@@ -20,7 +20,6 @@ class LogEnvListenerTest extends EventListenerTestCase
         $getData = [];
         $postData = [];
         $filesData = [];
-        $attributes = ['x' => 'y'];
         $headers = ['y' => 'v'];
 
         $this->ensureRequest();
@@ -30,14 +29,13 @@ class LogEnvListenerTest extends EventListenerTestCase
         $this->ensureUserAgent($userAgent);
         $this->ensureIp($ip);
         $this->ensureHeaders($headers);
-        $this->ensureAttributes($attributes);
         $this->ensureGetData($getData);
         $this->ensurePostData($postData);
         $this->ensureFilesData($filesData);
 
         $this->ensureLoggerIsCalledExactly(1);
 
-        $this->listener->onKernelTerminate($this->event);
+        $this->listener->onKernelRequest($this->event);
     }
 
     /**
@@ -53,7 +51,6 @@ class LogEnvListenerTest extends EventListenerTestCase
         $postData = ['foo' => new stdClass()];
         $filesData = ['bar' => 'baz'];
         $hostname = gethostname();
-        $attributes = ['x' => 'y'];
         $headers = ['y' => 'v'];
 
         $this->ensureRequest();
@@ -62,7 +59,6 @@ class LogEnvListenerTest extends EventListenerTestCase
         $this->ensureUrl($url);
         $this->ensureUserAgent($userAgent);
         $this->ensureIp($ip);
-        $this->ensureAttributes($attributes);
         $this->ensureHeaders($headers);
         $this->ensureGetData($getData);
         $this->ensurePostData($postData);
@@ -74,14 +70,13 @@ class LogEnvListenerTest extends EventListenerTestCase
             $hostname,
             $ip,
             $userAgent,
-            $attributes,
             $headers
         );
         $this->ensureGetIsLogged();
         $this->ensurePostIsLogged();
         $this->ensureFilesIsLogged();
 
-        $this->listener->onKernelTerminate($this->event);
+        $this->listener->onKernelRequest($this->event);
     }
 
     protected function setUp()
@@ -90,11 +85,10 @@ class LogEnvListenerTest extends EventListenerTestCase
 
         $this->queryBag = $this->createParameterBag();
         $this->requestBag = $this->createParameterBag();
-        $this->attributesBag = $this->createParameterBag();
         $this->headersBag = $this->createHeaderBag();
         $this->fileBag = $this->createFileBag();
         $this->request = $this->createRequest();
-        $this->event = $this->createPostResponseEvent();
+        $this->event = $this->createGetResponseEvent();
         $this->logger = $this->createLogger();
         $this->listener = new LogEnvListener($this->logger);
     }
@@ -143,17 +137,6 @@ class LogEnvListenerTest extends EventListenerTestCase
             ->will($this->returnValue($userAgent));
     }
 
-    private function ensureAttributes($attributes)
-    {
-        $this->request->attributes = $this->attributesBag;
-
-        $this
-            ->attributesBag
-            ->expects($this->once())
-            ->method('all')
-            ->will($this->returnValue($attributes));
-    }
-
     private function ensureHeaders($headers)
     {
         $this->request->headers = $this->headersBag;
@@ -171,17 +154,9 @@ class LogEnvListenerTest extends EventListenerTestCase
         $hostname,
         $ip,
         $userAgent,
-        $attributes,
         $headers
     ) {
-        $message = sprintf(
-            'Request: method = %s; url = %s; hostname = %s; remote_address= %s; http_user_agent = %s',
-            $method,
-            $url,
-            $hostname,
-            $ip,
-            $userAgent
-        );
+        $message = sprintf('Request %s %s', $method, $url);
 
         $context = [
             'metadata' => [
@@ -190,7 +165,6 @@ class LogEnvListenerTest extends EventListenerTestCase
                 'hostname' => $hostname,
                 'remote_address' => $ip,
                 'http_user_agent' => $userAgent,
-                'attributes' => $attributes,
                 'headers' => $headers,
             ],
             'description' => 'request',

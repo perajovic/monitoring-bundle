@@ -5,7 +5,7 @@ namespace SupportYard\MonitoringBundle\EventListener;
 use Psr\Log\LoggerInterface;
 use SupportYard\MonitoringBundle\Utils\ParametersToStringConverter;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 class LogEnvListener
 {
@@ -23,9 +23,9 @@ class LogEnvListener
     }
 
     /**
-     * @param PostResponseEvent $event
+     * @param GetResponseEvent $event
      */
-    public function onKernelTerminate(PostResponseEvent $event)
+    public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
 
@@ -42,27 +42,16 @@ class LogEnvListener
     {
         $method = $request->getRealMethod();
         $url = $request->getPathInfo();
-        $remoteAddress = $request->getClientIp();
-        $userAgent = $request->headers->get('User-Agent');
-        $hostname = gethostname();
 
         $this->logger->info(
-            sprintf(
-                'Request: method = %s; url = %s; hostname = %s; remote_address= %s; http_user_agent = %s',
-                $method,
-                $url,
-                $hostname,
-                $remoteAddress,
-                $userAgent
-            ),
+            sprintf('Request %s %s', $method, $url),
             [
                 'metadata' => [
                     'http_method' => $method,
                     'url' => $url,
-                    'hostname' => $hostname,
-                    'remote_address' => $remoteAddress,
-                    'http_user_agent' => $userAgent,
-                    'attributes' => $request->attributes->all(),
+                    'hostname' => gethostname(),
+                    'remote_address' => $request->getClientIp(),
+                    'http_user_agent' => $request->headers->get('User-Agent'),
                     'headers' => $request->headers->all(),
                 ],
                 'description' => 'request',
