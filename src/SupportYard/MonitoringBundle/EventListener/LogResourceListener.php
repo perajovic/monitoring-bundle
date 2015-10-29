@@ -74,7 +74,7 @@ class LogResourceListener
      */
     private function getExecutionTime()
     {
-        return round((microtime(true) - $this->startTime) * 1000, 3);
+        return round((microtime(true) - $this->startTime) * 1000, 2);
     }
 
     /**
