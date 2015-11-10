@@ -20,7 +20,7 @@
         "symfony/twig-bundle": "~2.7",
         "symfony/framework-bundle": "~2.7",
         "doctrine/doctrine-bundle": "~1.5",
-        "supportyard/framework-bundle": "0.*"
+        "supportyard/framework-bundle": "1.*"
     },
     "autoload": {
         "psr-4": { "": "src/" }
