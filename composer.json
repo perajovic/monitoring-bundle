@@ -3,7 +3,7 @@
     "type": "symfony-bundle",
     "description": "MonitoringBundle for Symfony2 applications",
     "keywords": ["symfony","bundle","monitoring"],
-    "homepage": "https://github.com/activecollab/monitoring-bundle",
+    "homepage": "https://github.com/supportyard/monitoring-bundle",
     "license": "MIT",
     "authors": [
         {
