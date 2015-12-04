@@ -2,31 +2,31 @@ services:
     support_yard_monitoring.listener.log_attributes:
         class: SupportYard\MonitoringBundle\EventListener\LogAttributesListener
         arguments:
-            - @logger
+            - "@logger"
         tags:
             - { name: kernel.event_listener, event: kernel.controller, priority: 149 }
             - { name: monolog.logger, channel: request }
     support_yard_monitoring.listener.log_env:
         class: SupportYard\MonitoringBundle\EventListener\LogEnvListener
         arguments:
-            - @logger
+            - "@logger"
         tags:
             - { name: kernel.event_listener, event: kernel.request, priority: 1000 }
             - { name: monolog.logger, channel: request }
     support_yard_monitoring.listener.log_exception:
         class: SupportYard\MonitoringBundle\EventListener\LogExceptionListener
         arguments:
-            - @logger
-            - @templating
+            - "@logger"
+            - "@templating"
         tags:
             - { name: kernel.event_listener, event: kernel.exception, priority: -127 }
             - { name: monolog.logger, channel: exception }
     support_yard_monitoring.listener.log_resource:
         class: SupportYard\MonitoringBundle\EventListener\LogResourceListener
         arguments:
-            - @logger
-            - @support_yard_monitoring.monolog.query_execution
-            - @kernel
+            - "@logger"
+            - "@support_yard_monitoring.monolog.query_execution"
+            - "@kernel"
         tags:
             - { name: kernel.event_listener, event: kernel.terminate, priority: -1001 }
             - { name: monolog.logger, channel: resource }
